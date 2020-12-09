@@ -45,8 +45,9 @@ qrcode_img_of(some_long_text)
 
 
 
-    
-![png](data/img/output_6_0.png)
+
+![png](https://raw.githubusercontent.com/thorwhalen/codify/master/data/img/output_6_0.png)
+
     
 
 
@@ -78,7 +79,7 @@ qrcode_img_of_sha256(some_long_text)
 ```
 
 
-    
-![png](data/img/output_10_0.png)
-    
+
+![png](https://raw.githubusercontent.com/thorwhalen/codify/master/data/img/output_10_0.png)
+
 
