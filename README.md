@@ -17,8 +17,8 @@ qrcode_img_of('https://github.com/thorwhalen')
 
 
 
-![png](data/img/output_4_0.png)
-    
+![png](https://raw.githubusercontent.com/thorwhalen/codify/master/data/img/output_4_0.png)
+
 
 And if you wanted to save that, you just do:
 
