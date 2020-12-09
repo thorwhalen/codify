@@ -1,0 +1,4 @@
+codify
+======
+.. automodule:: codify
+   :members:
