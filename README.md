@@ -81,3 +81,55 @@ qrcode_img_of_sha256(some_long_text)
 ![png](https://raw.githubusercontent.com/thorwhalen/codify/master/data/img/output_10_0.png)
 
 
+# Ceasar Cyphers
+
+Tools to play with Ceasar cyphers (https://en.wikipedia.org/wiki/Caesar_cipher).
+
+    >>> from codify import ceasar_cypher
+    >>> ceasar_cypher("Hi, I'm Bob!")
+    "ij, j'n cpc!"
+
+Note that every letter is lower-cased now. This is because ``ceasar_cypher`` preprocesses all phrases with
+``str.lower`` by default. You can stop this by specifying ``preprocess=None``, but note that, then, upper case
+letters won't be transformed (since they're not mapped by the default ``letter_transformer``).
+
+    >>> ceasar_cypher("Hi, I'm Bob!", preprocess=None)
+    "Hj, I'n Bpc!"
+
+The key to the cypher is ``letter_transformer`` which defines the letter mapping.
+The most general way to specify this is through a function, but most of the time you specify it through a mapping:
+an explicit ``{transform_this: into_this, and_this: into_that, ...}`` ``dict``.
+
+If you don't specify any ``letter_transformer``, as above, the default is taken to be a cylclic mapping over the
+whole alphabet with an ``offset=1``.
+
+You can change that offset to another number:
+
+    >>> ceasar_cypher("Hi, I'm Bob!", letter_transformer=4)
+    "lm, m'q fsf!"
+    >>> ceasar_cypher("Hi, I'm Bob!", letter_transformer=-3)
+    "ef, f'j yly!"
+
+Here's an example of specifying ``letter_transformer`` as an explicit ``dict``:
+
+    >>> ceasar_cypher("Hi, I'm Bob!", letter_transformer={'b': 'd', 'i': 'o'})
+    "ho, o'm dod!"
+
+You also have tools that will create such mappings for you, based on jumping by a fixed ``offset`` in one
+(``mk_letter_map_from_offset``) or several (``multiple_cycles_letter_transformer``) letter cycles.
+Below is an example using ``offset=1`` on vowels and consonants separately.
+
+    >>> from codify import vowel_separated_letter_transformer
+    >>> vowel_separated_letter_trans = vowel_separated_letter_transformer(offset=1)
+    >>> list(vowel_separated_letter_trans.items())[:9]
+    [('a', 'e'), ('e', 'i'), ('i', 'o'), ('o', 'u'), ('u', 'a'), ('b', 'c'), ('c', 'd'), ('d', 'f'), ('f', 'g')]
+
+This makes cyphers more readable:
+
+    >>> ceasar_cypher("Hi, I'm Bob!".lower(), letter_transformer=vowel_separated_letter_trans)
+    "jo, o'n cuc!"
+    >>> ceasar_cypher("jo, o'n cuc!", letter_transformer=invert_mapping(vowel_separated_letter_trans))
+    "hi, i'm bob!"
+
+    
+

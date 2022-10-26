@@ -1,7 +1,8 @@
+"""QR codes"""
+
 import qrcode
 
 from codify.util import bytes_to_sha256
-
 
 # TODO: Use Sig to make signatures more DRY
 
