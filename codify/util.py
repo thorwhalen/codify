@@ -1,3 +1,5 @@
+"""Utility functions for codify: hashing, encoding/decoding, and byte helpers."""
+
 import hashlib
 import os
 from typing import Union
