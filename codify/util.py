@@ -89,9 +89,9 @@ def sha256_and_extras_header(content, extra_info: bytes = b""):
     >>> sha256_and_extras_header(b'bob and alice', 'extra info'.encode())
     b'\x0c14\xf2\x834\xa3\xc0\x0c\xe3\xa8i9\r\xe2\xd3\x01\xb1Fj\x11U\x92j^Z\xa8\xaa\x9e\x89\xa2\xd5extra info'
     """
-    assert isinstance(
-        extra_info, bytes
-    ), "extra_info needs to be in bytes. If you specified string s, try entering s.encode() instead."
+    assert isinstance(extra_info, bytes), (
+        "extra_info needs to be in bytes. If you specified string s, try entering s.encode() instead."
+    )
     content_hash = bytes_to_sha256(content)
     return content_hash + extra_info
 

@@ -36,7 +36,7 @@ def qrcode_img_of(
     mask_pattern=None,
     fill="black",
     back_color="white",
-    **make_image_kw
+    **make_image_kw,
 ):
     q = qr_object(
         version=version,

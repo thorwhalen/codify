@@ -48,13 +48,14 @@ This makes cyphers more readable:
     "hi, i'm bob!"
 
 """
+
 from typing import Union, Dict
 from collections.abc import Callable
 from functools import lru_cache
 
 LetterTransformer = Union[int, dict[str, str], Callable[[str], str]]
 
-DFLT_ALPHABET = ''.join(map(chr, range(ord('a'), (ord('z') + 1))))
+DFLT_ALPHABET = "".join(map(chr, range(ord("a"), (ord("z") + 1))))
 
 
 def letter_plus_offset(letter, offset=1, alphabet=DFLT_ALPHABET):
@@ -67,7 +68,7 @@ def letter_plus_offset(letter, offset=1, alphabet=DFLT_ALPHABET):
     'i'
     """
     letter = letter.lower()
-    assert letter in alphabet, f'That letter is out of range: {letter}'
+    assert letter in alphabet, f"That letter is out of range: {letter}"
     idx = alphabet.index(letter) + offset
     return alphabet[idx % len(alphabet)]
 
@@ -105,7 +106,7 @@ def multiple_cycles_letter_transformer(
 
 
 def vowel_separated_letter_transformer(
-    offset=1, vowels='aeiou', alphabet=DFLT_ALPHABET
+    offset=1, vowels="aeiou", alphabet=DFLT_ALPHABET
 ):
     """A ceasar cypher with a fixed offset, but where the offset works on vowels and consonants cycles
     instead of the whole alphabet.
@@ -116,7 +117,7 @@ def vowel_separated_letter_transformer(
     >>> list(vowel_sep.items())[:9]
     [('a', 'e'), ('e', 'i'), ('i', 'o'), ('o', 'u'), ('u', 'a'), ('b', 'c'), ('c', 'd'), ('d', 'f'), ('f', 'g')]
     """
-    consonants = ''.join(x for x in alphabet if x not in vowels)
+    consonants = "".join(x for x in alphabet if x not in vowels)
     return multiple_cycles_letter_transformer(
         vowels, consonants, offset=offset, alphabet=alphabet
     )
@@ -138,12 +139,12 @@ def ceasar_cypher(
     letter_transformer = get_letter_transformer(letter_transformer)
     if preprocess:
         phrase = preprocess(phrase)
-    return ''.join([letter_transformer(letter) for letter in phrase])
+    return "".join([letter_transformer(letter) for letter in phrase])
 
 
 def invert_mapping(d: dict):
     inverse_d = {v: k for k, v in d.items()}
-    assert len(inverse_d) == len(d), f'Mapping had collisions when inverting: {d}'
+    assert len(inverse_d) == len(d), f"Mapping had collisions when inverting: {d}"
     return inverse_d
 
 

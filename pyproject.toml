@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "codify"
-version = "0.0.8"
+version = "0.0.9"
 description = "Generate codes"
 readme = "README.md"
 requires-python = ">=3.10"

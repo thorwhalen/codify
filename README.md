@@ -10,10 +10,9 @@ To install:	```pip install codify```
 
 
 ```python
-
 from codify.qr_coding import qrcode_img_of
 
-qrcode_img_of('https://github.com/thorwhalen')
+qrcode_img_of("https://github.com/thorwhalen")
 ```
 
 
@@ -24,7 +23,7 @@ qrcode_img_of('https://github.com/thorwhalen')
 And if you wanted to save that, you just do:
 
 ```python
-qrcode_img_of('https://github.com/thorwhalen').save('qr_code_of_my_website.png')
+qrcode_img_of("https://github.com/thorwhalen").save("qr_code_of_my_website.png")
 ```
 
 
@@ -62,6 +61,7 @@ For this, you can use sha256 for example...
 
 ```python
 from codify import bytes_to_sha256
+
 bytes_to_sha256(some_long_text.encode()).hex()
 ```
 
@@ -73,6 +73,7 @@ bytes_to_sha256(some_long_text.encode()).hex()
 
 ```python
 from codify.qr_coding import qrcode_img_of_sha256
+
 qrcode_img_of_sha256(some_long_text)
 ```
 

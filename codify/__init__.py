@@ -7,5 +7,5 @@ from codify.ceasar_cyphers import (
     get_letter_transformer,
     vowel_separated_letter_transformer,
     multiple_cycles_letter_transformer,
-    invert_mapping
+    invert_mapping,
 )
