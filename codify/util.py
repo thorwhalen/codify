@@ -1,6 +1,7 @@
 import hashlib
 import os
-from typing import Union, Callable
+from typing import Union
+from collections.abc import Callable
 
 DFLT_OFFSET_POINTER_N_BYTES = 64
 DFLT_ENCODING = "utf-8"
@@ -93,7 +94,7 @@ def sha256_and_extras_header(content, extra_info: bytes = b""):
     return content_hash + extra_info
 
 
-def decode_with(x, decoder: Union[str, bool, Callable] = False):
+def decode_with(x, decoder: str | bool | Callable = False):
     """Decode ``x`` with specified decoder
 
     :param x: Input to decode

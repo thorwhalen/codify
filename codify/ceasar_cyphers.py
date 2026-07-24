@@ -48,10 +48,11 @@ This makes cyphers more readable:
     "hi, i'm bob!"
 
 """
-from typing import Union, Dict, Callable
+from typing import Union, Dict
+from collections.abc import Callable
 from functools import lru_cache
 
-LetterTransformer = Union[int, Dict[str, str], Callable[[str], str]]
+LetterTransformer = Union[int, dict[str, str], Callable[[str], str]]
 
 DFLT_ALPHABET = ''.join(map(chr, range(ord('a'), (ord('z') + 1))))
 
@@ -115,7 +116,7 @@ def vowel_separated_letter_transformer(
     >>> list(vowel_sep.items())[:9]
     [('a', 'e'), ('e', 'i'), ('i', 'o'), ('o', 'u'), ('u', 'a'), ('b', 'c'), ('c', 'd'), ('d', 'f'), ('f', 'g')]
     """
-    consonants = ''.join((x for x in alphabet if x not in vowels))
+    consonants = ''.join(x for x in alphabet if x not in vowels)
     return multiple_cycles_letter_transformer(
         vowels, consonants, offset=offset, alphabet=alphabet
     )
@@ -152,7 +153,7 @@ def get_simple_words(max_n_words=100_000, alphabet=DFLT_ALPHABET):
     from lexis import Lemmas
 
     words = set(Lemmas()) & most_frequent_words(max_n_words)
-    return set(word for word in words if set(word.lower()).issubset(alphabet))
+    return {word for word in words if set(word.lower()).issubset(alphabet)}
 
 
 def closed_words(letter_transformer: LetterTransformer = 1, words=None):
