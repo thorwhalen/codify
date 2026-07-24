@@ -1,0 +1,8 @@
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   module_docs/codify
+   module_docs/codify/ceasar_cyphers
+   module_docs/codify/qr_coding
+   module_docs/codify/util

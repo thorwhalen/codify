@@ -1,0 +1,212 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>codify.ceasar_cyphers &mdash; codify 0.0.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=53b53b71"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="codify.qr_coding" href="qr_coding.html" />
+    <link rel="prev" title="codify" href="../codify.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            codify
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codify.html">codify</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">codify.ceasar_cyphers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#codify.ceasar_cyphers.closed_words"><code class="docutils literal notranslate"><span class="pre">closed_words()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#codify.ceasar_cyphers.letter_plus_offset"><code class="docutils literal notranslate"><span class="pre">letter_plus_offset()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#codify.ceasar_cyphers.multiple_cycles_letter_transformer"><code class="docutils literal notranslate"><span class="pre">multiple_cycles_letter_transformer()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#codify.ceasar_cyphers.vowel_separated_letter_transformer"><code class="docutils literal notranslate"><span class="pre">vowel_separated_letter_transformer()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qr_coding.html">codify.qr_coding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">codify.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">codify</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">codify.ceasar_cyphers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/codify/ceasar_cyphers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-codify.ceasar_cyphers">
+<span id="codify-ceasar-cyphers"></span><h1>codify.ceasar_cyphers<a class="headerlink" href="#module-codify.ceasar_cyphers" title="Link to this heading"></a></h1>
+<p>Tools to play with Ceasar cyphers (<a class="reference external" href="https://en.wikipedia.org/wiki/Caesar_cipher">https://en.wikipedia.org/wiki/Caesar_cipher</a>).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">codify</span><span class="w"> </span><span class="kn">import</span> <span class="n">ceasar_cypher</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ceasar_cypher</span><span class="p">(</span><span class="s2">&quot;Hi, I&#39;m Bob!&quot;</span><span class="p">)</span>
+<span class="go">&quot;ij, j&#39;n cpc!&quot;</span>
+</pre></div>
+</div>
+<p>Note that every letter is lower-cased now. This is because <code class="docutils literal notranslate"><span class="pre">ceasar_cypher</span></code> preprocesses all phrases with
+<code class="docutils literal notranslate"><span class="pre">str.lower</span></code> by default. You can stop this by specifying <code class="docutils literal notranslate"><span class="pre">preprocess=None</span></code>, but note that, then, upper case
+letters won’t be transformed (since they’re not mapped by the default <code class="docutils literal notranslate"><span class="pre">letter_transformer</span></code>).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ceasar_cypher</span><span class="p">(</span><span class="s2">&quot;Hi, I&#39;m Bob!&quot;</span><span class="p">,</span> <span class="n">preprocess</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="go">&quot;Hj, I&#39;n Bpc!&quot;</span>
+</pre></div>
+</div>
+<p>The key to the cypher is <code class="docutils literal notranslate"><span class="pre">letter_transformer</span></code> which defines the letter mapping.
+The most general way to specify this is through a function, but most of the time you specify it through a mapping:
+an explicit <code class="docutils literal notranslate"><span class="pre">{transform_this:</span> <span class="pre">into_this,</span> <span class="pre">and_this:</span> <span class="pre">into_that,</span> <span class="pre">...}</span></code> <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p>
+<p>If you don’t specify any <code class="docutils literal notranslate"><span class="pre">letter_transformer</span></code>, as above, the default is taken to be a cylclic mapping over the
+whole alphabet with an <code class="docutils literal notranslate"><span class="pre">offset=1</span></code>.</p>
+<p>You can change that offset to another number:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ceasar_cypher</span><span class="p">(</span><span class="s2">&quot;Hi, I&#39;m Bob!&quot;</span><span class="p">,</span> <span class="n">letter_transformer</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">&quot;lm, m&#39;q fsf!&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ceasar_cypher</span><span class="p">(</span><span class="s2">&quot;Hi, I&#39;m Bob!&quot;</span><span class="p">,</span> <span class="n">letter_transformer</span><span class="o">=-</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">&quot;ef, f&#39;j yly!&quot;</span>
+</pre></div>
+</div>
+<p>Here’s an example of specifying <code class="docutils literal notranslate"><span class="pre">letter_transformer</span></code> as an explicit <code class="docutils literal notranslate"><span class="pre">dict</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ceasar_cypher</span><span class="p">(</span><span class="s2">&quot;Hi, I&#39;m Bob!&quot;</span><span class="p">,</span> <span class="n">letter_transformer</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">})</span>
+<span class="go">&quot;ho, o&#39;m dod!&quot;</span>
+</pre></div>
+</div>
+<p>You also have tools that will create such mappings for you, based on jumping by a fixed <code class="docutils literal notranslate"><span class="pre">offset</span></code> in one
+(<code class="docutils literal notranslate"><span class="pre">mk_letter_map_from_offset</span></code>) or several (<code class="docutils literal notranslate"><span class="pre">multiple_cycles_letter_transformer</span></code>) letter cycles.
+Below is an example using <code class="docutils literal notranslate"><span class="pre">offset=1</span></code> on vowels and consonants separately.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">codify</span><span class="w"> </span><span class="kn">import</span> <span class="n">vowel_separated_letter_transformer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vowel_separated_letter_trans</span> <span class="o">=</span> <span class="n">vowel_separated_letter_transformer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">vowel_separated_letter_trans</span><span class="o">.</span><span class="n">items</span><span class="p">())[:</span><span class="mi">9</span><span class="p">]</span>
+<span class="go">[(&#39;a&#39;, &#39;e&#39;), (&#39;e&#39;, &#39;i&#39;), (&#39;i&#39;, &#39;o&#39;), (&#39;o&#39;, &#39;u&#39;), (&#39;u&#39;, &#39;a&#39;), (&#39;b&#39;, &#39;c&#39;), (&#39;c&#39;, &#39;d&#39;), (&#39;d&#39;, &#39;f&#39;), (&#39;f&#39;, &#39;g&#39;)]</span>
+</pre></div>
+</div>
+<p>This makes cyphers more readable:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ceasar_cypher</span><span class="p">(</span><span class="s2">&quot;Hi, I&#39;m Bob!&quot;</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">letter_transformer</span><span class="o">=</span><span class="n">vowel_separated_letter_trans</span><span class="p">)</span>
+<span class="go">&quot;jo, o&#39;n cuc!&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ceasar_cypher</span><span class="p">(</span><span class="s2">&quot;jo, o&#39;n cuc!&quot;</span><span class="p">,</span> <span class="n">letter_transformer</span><span class="o">=</span><span class="n">invert_mapping</span><span class="p">(</span><span class="n">vowel_separated_letter_trans</span><span class="p">))</span>
+<span class="go">&quot;hi, i&#39;m bob!&quot;</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="codify.ceasar_cyphers.closed_words">
+<span class="sig-prename descclassname"><span class="pre">codify.ceasar_cyphers.</span></span><span class="sig-name descname"><span class="pre">closed_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">letter_transformer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/codify/ceasar_cyphers.html#closed_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codify.ceasar_cyphers.closed_words" title="Link to this definition"></a></dt>
+<dd><p>My daughter “invented” the (a-&gt;b, b-&gt;c, …) Ceasar cypher (<a class="reference external" href="https://en.wikipedia.org/wiki/Caesar_cipher">https://en.wikipedia.org/wiki/Caesar_cipher</a>)
+one day and proceeded in translating everyone’s names and many other words.
+One day she stumbled on a word whose transformation was a valid english word itself.
+She was very excited about it.
+I told her daddy would ask the computer what other such words there were.
+Here’s that.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="codify.ceasar_cyphers.letter_plus_offset">
+<span class="sig-prename descclassname"><span class="pre">codify.ceasar_cyphers.</span></span><span class="sig-name descname"><span class="pre">letter_plus_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">letter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'abcdefghijklmnopqrstuvwxyz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/codify/ceasar_cyphers.html#letter_plus_offset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codify.ceasar_cyphers.letter_plus_offset" title="Link to this definition"></a></dt>
+<dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">letter_plus_offset</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="go">&#39;e&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">letter_plus_offset</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">&#39;b&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">letter_plus_offset</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alphabet</span><span class="o">=</span><span class="s1">&#39;aeiou&#39;</span><span class="p">)</span>
+<span class="go">&#39;i&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="codify.ceasar_cyphers.multiple_cycles_letter_transformer">
+<span class="sig-prename descclassname"><span class="pre">codify.ceasar_cyphers.</span></span><span class="sig-name descname"><span class="pre">multiple_cycles_letter_transformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">letter_cycles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'abcdefghijklmnopqrstuvwxyz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/codify/ceasar_cyphers.html#multiple_cycles_letter_transformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codify.ceasar_cyphers.multiple_cycles_letter_transformer" title="Link to this definition"></a></dt>
+<dd><p>See vowel_separated_letter_transformer for a particular case.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="codify.ceasar_cyphers.vowel_separated_letter_transformer">
+<span class="sig-prename descclassname"><span class="pre">codify.ceasar_cyphers.</span></span><span class="sig-name descname"><span class="pre">vowel_separated_letter_transformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vowels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'aeiou'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'abcdefghijklmnopqrstuvwxyz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/codify/ceasar_cyphers.html#vowel_separated_letter_transformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codify.ceasar_cyphers.vowel_separated_letter_transformer" title="Link to this definition"></a></dt>
+<dd><p>A ceasar cypher with a fixed offset, but where the offset works on vowels and consonants cycles
+instead of the whole alphabet.</p>
+<p>It’s a particular case of <code class="docutils literal notranslate"><span class="pre">multiple_cycles_letter_transformer</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vowel_sep</span> <span class="o">=</span> <span class="n">vowel_separated_letter_transformer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">vowel_sep</span><span class="o">.</span><span class="n">items</span><span class="p">())[:</span><span class="mi">9</span><span class="p">]</span>
+<span class="go">[(&#39;a&#39;, &#39;e&#39;), (&#39;e&#39;, &#39;i&#39;), (&#39;i&#39;, &#39;o&#39;), (&#39;o&#39;, &#39;u&#39;), (&#39;u&#39;, &#39;a&#39;), (&#39;b&#39;, &#39;c&#39;), (&#39;c&#39;, &#39;d&#39;), (&#39;d&#39;, &#39;f&#39;), (&#39;f&#39;, &#39;g&#39;)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../codify.html" class="btn btn-neutral float-left" title="codify" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qr_coding.html" class="btn btn-neutral float-right" title="codify.qr_coding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

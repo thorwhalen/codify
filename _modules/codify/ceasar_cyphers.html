@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>codify.ceasar_cyphers &mdash; codify 0.0.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=53b53b71"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            codify
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/codify.html">codify</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/codify/ceasar_cyphers.html">codify.ceasar_cyphers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/codify/qr_coding.html">codify.qr_coding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/codify/util.html">codify.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">codify</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">codify.ceasar_cyphers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for codify.ceasar_cyphers</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Tools to play with Ceasar cyphers (https://en.wikipedia.org/wiki/Caesar_cipher).</span>
+
+<span class="sd">    &gt;&gt;&gt; from codify import ceasar_cypher</span>
+<span class="sd">    &gt;&gt;&gt; ceasar_cypher(&quot;Hi, I&#39;m Bob!&quot;)</span>
+<span class="sd">    &quot;ij, j&#39;n cpc!&quot;</span>
+
+<span class="sd">Note that every letter is lower-cased now. This is because ``ceasar_cypher`` preprocesses all phrases with</span>
+<span class="sd">``str.lower`` by default. You can stop this by specifying ``preprocess=None``, but note that, then, upper case</span>
+<span class="sd">letters won&#39;t be transformed (since they&#39;re not mapped by the default ``letter_transformer``).</span>
+
+<span class="sd">    &gt;&gt;&gt; ceasar_cypher(&quot;Hi, I&#39;m Bob!&quot;, preprocess=None)</span>
+<span class="sd">    &quot;Hj, I&#39;n Bpc!&quot;</span>
+
+<span class="sd">The key to the cypher is ``letter_transformer`` which defines the letter mapping.</span>
+<span class="sd">The most general way to specify this is through a function, but most of the time you specify it through a mapping:</span>
+<span class="sd">an explicit ``{transform_this: into_this, and_this: into_that, ...}`` ``dict``.</span>
+
+<span class="sd">If you don&#39;t specify any ``letter_transformer``, as above, the default is taken to be a cylclic mapping over the</span>
+<span class="sd">whole alphabet with an ``offset=1``.</span>
+
+<span class="sd">You can change that offset to another number:</span>
+
+<span class="sd">    &gt;&gt;&gt; ceasar_cypher(&quot;Hi, I&#39;m Bob!&quot;, letter_transformer=4)</span>
+<span class="sd">    &quot;lm, m&#39;q fsf!&quot;</span>
+<span class="sd">    &gt;&gt;&gt; ceasar_cypher(&quot;Hi, I&#39;m Bob!&quot;, letter_transformer=-3)</span>
+<span class="sd">    &quot;ef, f&#39;j yly!&quot;</span>
+
+<span class="sd">Here&#39;s an example of specifying ``letter_transformer`` as an explicit ``dict``:</span>
+
+<span class="sd">    &gt;&gt;&gt; ceasar_cypher(&quot;Hi, I&#39;m Bob!&quot;, letter_transformer={&#39;b&#39;: &#39;d&#39;, &#39;i&#39;: &#39;o&#39;})</span>
+<span class="sd">    &quot;ho, o&#39;m dod!&quot;</span>
+
+<span class="sd">You also have tools that will create such mappings for you, based on jumping by a fixed ``offset`` in one</span>
+<span class="sd">(``mk_letter_map_from_offset``) or several (``multiple_cycles_letter_transformer``) letter cycles.</span>
+<span class="sd">Below is an example using ``offset=1`` on vowels and consonants separately.</span>
+
+<span class="sd">    &gt;&gt;&gt; from codify import vowel_separated_letter_transformer</span>
+<span class="sd">    &gt;&gt;&gt; vowel_separated_letter_trans = vowel_separated_letter_transformer(offset=1)</span>
+<span class="sd">    &gt;&gt;&gt; list(vowel_separated_letter_trans.items())[:9]</span>
+<span class="sd">    [(&#39;a&#39;, &#39;e&#39;), (&#39;e&#39;, &#39;i&#39;), (&#39;i&#39;, &#39;o&#39;), (&#39;o&#39;, &#39;u&#39;), (&#39;u&#39;, &#39;a&#39;), (&#39;b&#39;, &#39;c&#39;), (&#39;c&#39;, &#39;d&#39;), (&#39;d&#39;, &#39;f&#39;), (&#39;f&#39;, &#39;g&#39;)]</span>
+
+<span class="sd">This makes cyphers more readable:</span>
+
+<span class="sd">    &gt;&gt;&gt; ceasar_cypher(&quot;Hi, I&#39;m Bob!&quot;.lower(), letter_transformer=vowel_separated_letter_trans)</span>
+<span class="sd">    &quot;jo, o&#39;n cuc!&quot;</span>
+<span class="sd">    &gt;&gt;&gt; ceasar_cypher(&quot;jo, o&#39;n cuc!&quot;, letter_transformer=invert_mapping(vowel_separated_letter_trans))</span>
+<span class="sd">    &quot;hi, i&#39;m bob!&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+
+<span class="n">LetterTransformer</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span>
+
+<span class="n">DFLT_ALPHABET</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">chr</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">),</span> <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))))</span>
+
+
+<div class="viewcode-block" id="letter_plus_offset">
+<a class="viewcode-back" href="../../module_docs/codify/ceasar_cyphers.html#codify.ceasar_cyphers.letter_plus_offset">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">letter_plus_offset</span><span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alphabet</span><span class="o">=</span><span class="n">DFLT_ALPHABET</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; letter_plus_offset(&#39;a&#39;, 4)</span>
+<span class="sd">    &#39;e&#39;</span>
+<span class="sd">    &gt;&gt;&gt; letter_plus_offset(&#39;z&#39;, 2)</span>
+<span class="sd">    &#39;b&#39;</span>
+<span class="sd">    &gt;&gt;&gt; letter_plus_offset(&#39;a&#39;, offset=2, alphabet=&#39;aeiou&#39;)</span>
+<span class="sd">    &#39;i&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">letter</span> <span class="o">=</span> <span class="n">letter</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">alphabet</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;That letter is out of range: </span><span class="si">{</span><span class="n">letter</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">alphabet</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span>
+    <span class="k">return</span> <span class="n">alphabet</span><span class="p">[</span><span class="n">idx</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">alphabet</span><span class="p">)]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">mk_letter_map_from_offset</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alphabet</span><span class="o">=</span><span class="n">DFLT_ALPHABET</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">from_</span><span class="p">:</span> <span class="n">letter_plus_offset</span><span class="p">(</span><span class="n">from_</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">alphabet</span><span class="p">)</span> <span class="k">for</span> <span class="n">from_</span> <span class="ow">in</span> <span class="n">alphabet</span><span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_cycles_are_disjoint</span><span class="p">(</span><span class="n">cycles</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">cycles</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_cycles_cover_alphabet</span><span class="p">(</span><span class="n">cycles</span><span class="p">,</span> <span class="n">alphabet</span><span class="o">=</span><span class="n">DFLT_ALPHABET</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">cycles</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">alphabet</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="multiple_cycles_letter_transformer">
+<a class="viewcode-back" href="../../module_docs/codify/ceasar_cyphers.html#codify.ceasar_cyphers.multiple_cycles_letter_transformer">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">multiple_cycles_letter_transformer</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">letter_cycles</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alphabet</span><span class="o">=</span><span class="n">DFLT_ALPHABET</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See vowel_separated_letter_transformer for a particular case.&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">_cycles_are_disjoint</span><span class="p">(</span><span class="n">letter_cycles</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">_cycles_cover_alphabet</span><span class="p">(</span><span class="n">letter_cycles</span><span class="p">,</span> <span class="n">alphabet</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">gen</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">cycle</span> <span class="ow">in</span> <span class="n">letter_cycles</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="n">mk_letter_map_from_offset</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">alphabet</span><span class="o">=</span><span class="n">cycle</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">gen</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="vowel_separated_letter_transformer">
+<a class="viewcode-back" href="../../module_docs/codify/ceasar_cyphers.html#codify.ceasar_cyphers.vowel_separated_letter_transformer">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">vowel_separated_letter_transformer</span><span class="p">(</span>
+    <span class="n">offset</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">vowels</span><span class="o">=</span><span class="s1">&#39;aeiou&#39;</span><span class="p">,</span> <span class="n">alphabet</span><span class="o">=</span><span class="n">DFLT_ALPHABET</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A ceasar cypher with a fixed offset, but where the offset works on vowels and consonants cycles</span>
+<span class="sd">    instead of the whole alphabet.</span>
+
+<span class="sd">    It&#39;s a particular case of ``multiple_cycles_letter_transformer``.</span>
+
+<span class="sd">    &gt;&gt;&gt; vowel_sep = vowel_separated_letter_transformer()</span>
+<span class="sd">    &gt;&gt;&gt; list(vowel_sep.items())[:9]</span>
+<span class="sd">    [(&#39;a&#39;, &#39;e&#39;), (&#39;e&#39;, &#39;i&#39;), (&#39;i&#39;, &#39;o&#39;), (&#39;o&#39;, &#39;u&#39;), (&#39;u&#39;, &#39;a&#39;), (&#39;b&#39;, &#39;c&#39;), (&#39;c&#39;, &#39;d&#39;), (&#39;d&#39;, &#39;f&#39;), (&#39;f&#39;, &#39;g&#39;)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">consonants</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">alphabet</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vowels</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">multiple_cycles_letter_transformer</span><span class="p">(</span>
+        <span class="n">vowels</span><span class="p">,</span> <span class="n">consonants</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="n">alphabet</span><span class="o">=</span><span class="n">alphabet</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_letter_transformer</span><span class="p">(</span><span class="n">letter_transformer</span><span class="p">:</span> <span class="n">LetterTransformer</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">letter_transformer</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">letter_transformer</span> <span class="o">=</span> <span class="n">mk_letter_map_from_offset</span><span class="p">(</span><span class="n">letter_transformer</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">letter_transformer</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">letter_transformer</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">letter_transformer</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">letter_transformer</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ceasar_cypher</span><span class="p">(</span>
+    <span class="n">phrase</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">letter_transformer</span><span class="p">:</span> <span class="n">LetterTransformer</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">preprocess</span><span class="o">=</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span>
+<span class="p">):</span>
+    <span class="n">letter_transformer</span> <span class="o">=</span> <span class="n">get_letter_transformer</span><span class="p">(</span><span class="n">letter_transformer</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">preprocess</span><span class="p">:</span>
+        <span class="n">phrase</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">phrase</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">letter_transformer</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span> <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">phrase</span><span class="p">])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">invert_mapping</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="n">inverse_d</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">inverse_d</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;Mapping had collisions when inverting: </span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">return</span> <span class="n">inverse_d</span>
+
+
+<span class="nd">@lru_cache</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_simple_words</span><span class="p">(</span><span class="n">max_n_words</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">alphabet</span><span class="o">=</span><span class="n">DFLT_ALPHABET</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">idiom</span><span class="w"> </span><span class="kn">import</span> <span class="n">most_frequent_words</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">lexis</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lemmas</span>
+
+    <span class="n">words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">Lemmas</span><span class="p">())</span> <span class="o">&amp;</span> <span class="n">most_frequent_words</span><span class="p">(</span><span class="n">max_n_words</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">alphabet</span><span class="p">)}</span>
+
+
+<div class="viewcode-block" id="closed_words">
+<a class="viewcode-back" href="../../module_docs/codify/ceasar_cyphers.html#codify.ceasar_cyphers.closed_words">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">closed_words</span><span class="p">(</span><span class="n">letter_transformer</span><span class="p">:</span> <span class="n">LetterTransformer</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">words</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    My daughter &quot;invented&quot; the (a-&gt;b, b-&gt;c, ...) Ceasar cypher (https://en.wikipedia.org/wiki/Caesar_cipher)</span>
+<span class="sd">    one day and proceeded in translating everyone&#39;s names and many other words.</span>
+<span class="sd">    One day she stumbled on a word whose transformation was a valid english word itself.</span>
+<span class="sd">    She was very excited about it.</span>
+<span class="sd">    I told her daddy would ask the computer what other such words there were.</span>
+<span class="sd">    Here&#39;s that.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">words</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">get_simple_words</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="n">cyphered_word</span> <span class="o">=</span> <span class="n">ceasar_cypher</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">letter_transformer</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cyphered_word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">word</span><span class="p">,</span> <span class="n">cyphered_word</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

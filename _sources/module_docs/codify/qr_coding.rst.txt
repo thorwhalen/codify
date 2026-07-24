@@ -1,0 +1,4 @@
+codify.qr_coding
+================
+.. automodule:: codify.qr_coding
+   :members:
